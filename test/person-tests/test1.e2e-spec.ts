@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { PersonModule } from './../src/person/person.module';
-import { PersonService } from './../src/person/person.service';
+import { PersonModule } from './../../src/person/person.module';
+import { PersonService } from './../../src/person/person.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
