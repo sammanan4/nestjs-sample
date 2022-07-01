@@ -31,9 +31,14 @@ describe('PersonController (e2e)', () => {
         app = moduleFixture.createNestApplication();
         await app.init();
     });
-    afterEach(async () => {
-        await moduleFixture.close();
-    });
+    // afterEach(async () => {
+    //     await moduleFixture.close();
+    // });
+    afterAll(async () => {
+        if (moduleFixture)
+            await moduleFixture.close();
+        // done();
+    })
 
     it('/ (GET)', () => {
         return request(app.getHttpServer())
