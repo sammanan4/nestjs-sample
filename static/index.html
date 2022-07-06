@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Room</title>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    News Room
+    <br>
+    room id <input type="text" id="roomId">
+    <br>
+    <button onclick="joinNewsRoom()">Join News Room</button>
+    <button onclick="leaveNewsRoom()">Leave News Room</button>
+    <script>
+        let socket = io('http://localhost:3000');
+
+        socket.on('newsReceived', function(data){
+            console.log(data);
+        });
+
+        function joinNewsRoom(){
+            socket.emit('joinNewsRoom', {
+                room: document.getElementById('roomId').value
+            });
+        }
+
+        function leaveNewsRoom(){
+            socket.emit('leaveNewsRoom', {
+                room: document.getElementById('roomId').value
+            });
+        }
+
+    </script>
+</body>
+</html>

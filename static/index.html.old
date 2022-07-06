@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Websocket test</title>
+    <script src="http://localhost:3001/first-gateway/socket.io.js"></script>
+</head>
+<body>
+    Helllo websocket
+    <input type="text" id="messageBox">
+    <button onclick="emit()" >Emit</button>
+    <script>
+        let socket = io('http://localhost:3001/socket', { path: '/first-gateway' });
+
+        socket.on('responseToClient', function(data){
+            console.log(data);
+        });
+
+        
+        function emit() {
+            let message = document.getElementById('messageBox').value;
+            socket.emit('requestToServer', {
+                message: message
+            });
+        }
+
+    </script>
+</body>
+</html>

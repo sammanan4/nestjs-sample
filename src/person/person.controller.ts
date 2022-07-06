@@ -16,12 +16,13 @@ import { PersonDto } from './dto/person.dto';
 import { Request, Response } from 'express';
 import { PersonService } from './person.service';
 import { Person } from './interfaces/person.interface';
+import { NewsGateway } from './news.gateway';
 
 
 @Controller('person')
 export class PersonController {
 
-    constructor(private readonly personService: PersonService) { }
+    constructor(private readonly personService: PersonService, private newsGateway: NewsGateway) { }
 
     @Get()
     findAll(): Promise<Person[]> {
@@ -64,5 +65,13 @@ export class PersonController {
             url: request.url,
             path: request.path,
         });
+    }
+
+
+    @Post('send-news')
+    sendNews(@Body() news: {room: string, content: string}): void {
+        console.log('here---->');
+        
+        this.newsGateway.sendNewsToClient(news);
     }
 }
