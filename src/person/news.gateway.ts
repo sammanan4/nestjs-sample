@@ -13,7 +13,11 @@ import { Server, Socket } from 'socket.io';
 @WebSocketGateway()
 export class NewsGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
+  
   @WebSocketServer() wss: Server;
+
+  private listeners: any = {};
+
 
   private logger: Logger = new Logger('NewsGateway');
 
@@ -21,50 +25,20 @@ export class NewsGateway
     this.logger.log('Web Socket Gateway Initialised!!!');
   }
 
-  handleConnection(client: Socket, ...args: any[]) {
-    this.logger.log(`Web Socket Gateway Connected by ${client.id}!!!`);
+  async handleConnection(client: Socket, ...args: any[]) {
+    this.logger.log(`Web Socket Gateway Connected by ${client.id}`);
+    this.listeners[client.handshake.query.userId as string] = client;
   }
 
 
   handleDisconnect(client: Socket) {
     this.logger.log(`Web Socket Gateway Disonnected by ${client.id}!!!`);
+    delete this.listeners[client.handshake.query.userId as string];
   }
   
-  
-  @SubscribeMessage('leaveNewsRoom')
-  handleLeaveRoom(client: Socket, data: {room : string}) {
-    console.log('nws room left');
-    client.leave(data.room);
+
+  sendNewsToClient(data: { userId: string; content: string }) {
+    this.listeners[data.userId].emit('newsReceived', data.content)
   }
 
-  @SubscribeMessage('joinNewsRoom')
-  handleJoinRoom(client: Socket, data: {room : string}) {
-    console.log('nws room joined', data.room);
-    client.join(data.room);
-  }
-
-
-  sendNewsToClient(data: { room: string; content: string }) {
-    console.log('sending news', data.room);
-    
-    this.wss.to(data.room).emit('newsReceived', data.content);
-  }
-
-  // @SubscribeMessage('requestToServer')
-  // async handleMessage(client: Socket, data: string): Promise<void> { //WsResponse<string> {
-  // for (let i = 0; i < 10; i++) {
-  // emits to all subscribers
-  // this.wss.emit('responseToClient', `Hello ${data}`);
-
-  // emits to current client
-  // client.emit('responseToClient', data);
-  // sleep
-  // await new Promise(resolve => setTimeout(resolve, 1000));
-  // this.logger.log(`Web Socket Gateway Request to Server by ${client.id}!!!`);
-  // }
-  // return { event: 'responseToClient', data: data};
-  // }
 }
-
-
-// room id: 123456

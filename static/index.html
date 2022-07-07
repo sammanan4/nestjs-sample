@@ -10,27 +10,22 @@
 <body>
     News Room
     <br>
-    room id <input type="text" id="roomId">
+    UserID <input type="text" id="userId">
     <br>
-    <button onclick="joinNewsRoom()">Join News Room</button>
-    <button onclick="leaveNewsRoom()">Leave News Room</button>
+    <button onclick="listenForNews()">Listen for this UserID</button>
+    <button onclick="leaveNewsRoom()">Stop Listening</button>
     <script>
-        let socket = io('http://localhost:3000');
-
-        socket.on('newsReceived', function(data){
-            console.log(data);
-        });
-
-        function joinNewsRoom(){
-            socket.emit('joinNewsRoom', {
-                room: document.getElementById('roomId').value
+        let socket;
+        
+        function listenForNews(){
+            socket = io('http://localhost:3000', { query: { userId: document.getElementById('userId').value }});
+            socket.on('newsReceived', function(data){
+                console.log(data);
             });
         }
 
         function leaveNewsRoom(){
-            socket.emit('leaveNewsRoom', {
-                room: document.getElementById('roomId').value
-            });
+            socket.disconnect();
         }
 
     </script>

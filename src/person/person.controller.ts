@@ -69,9 +69,7 @@ export class PersonController {
 
 
     @Post('send-news')
-    sendNews(@Body() news: {room: string, content: string}): void {
-        console.log('here---->');
-        
+    sendNews(@Body() news: {userId: string, content: string}): void {
         this.newsGateway.sendNewsToClient(news);
     }
 }
