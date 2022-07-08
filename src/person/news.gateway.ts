@@ -16,7 +16,7 @@ export class NewsGateway
   
   @WebSocketServer() wss: Server;
 
-  private listeners: any = {};
+  private listeners: { [key: string]: Socket; } = {};
 
 
   private logger: Logger = new Logger('NewsGateway');
