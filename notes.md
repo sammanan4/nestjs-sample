@@ -22,3 +22,23 @@ npm i --save @nestjs/config
 npm install --save @nestjs/mongoose mongoose
 npm i --save-dev @nestjs/testing
 ```
+
+## JWT Auth
+
+```
+npm install --save @nestjs/passport @nestjs/jwt passport passport-jwt
+npm install --save-dev @types/passport-jwt
+```
+
+```
+nest g module auth
+nest g service auth
+nest g module user
+nest g service user
+nest g controller auth
+```
+
+```
+npm i bcrypt
+npm i @types/bcrypt
+```

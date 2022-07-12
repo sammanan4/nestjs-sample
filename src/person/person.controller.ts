@@ -11,12 +11,14 @@ import {
     Query,
     Req,
     Res,
+    UseGuards,
 } from '@nestjs/common';
 import { PersonDto } from './dto/person.dto';
 import { Request, Response } from 'express';
 import { PersonService } from './person.service';
 import { Person } from './interfaces/person.interface';
 import { NewsGateway } from './news.gateway';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 
 @Controller('person')
@@ -24,6 +26,7 @@ export class PersonController {
 
     constructor(private readonly personService: PersonService, private newsGateway: NewsGateway) { }
 
+    @UseGuards(JwtAuthGuard)
     @Get()
     findAll(): Promise<Person[]> {
         return this.personService.findAll()
